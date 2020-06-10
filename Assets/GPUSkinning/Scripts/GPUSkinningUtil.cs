@@ -20,6 +20,12 @@ public class GPUSkinningUtil
 #endif
     }
 
+    /// <summary>
+    /// Convert MatriesTexture ByteData to Texture2D
+    /// </summary>
+    /// <param name="textureRawData"></param>
+    /// <param name="anim"></param>
+    /// <returns></returns>
     public static Texture2D CreateTexture2D(TextAsset textureRawData, GPUSkinningAnimation anim)
     {
         if(textureRawData == null || anim == null)
@@ -59,6 +65,12 @@ public class GPUSkinningUtil
         }
     }
 
+    /// <summary>
+    /// Get BoneNode Path in Hierarchy
+    /// </summary>
+    /// <param name="bones"></param>
+    /// <param name="boneIndex"></param>
+    /// <returns></returns>
     public static string BoneHierarchyPath(GPUSkinningBone[] bones, int boneIndex)
     {
         if (bones == null || boneIndex < 0 || boneIndex >= bones.Length)

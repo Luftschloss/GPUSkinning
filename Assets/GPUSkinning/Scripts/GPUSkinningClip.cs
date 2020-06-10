@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Sample Clip Unit
+/// </summary>
 [System.Serializable]
 public class GPUSkinningClip
 {
@@ -12,8 +15,14 @@ public class GPUSkinningClip
 
     public GPUSkinningWrapMode wrapMode = GPUSkinningWrapMode.Once;
 
+    /// <summary>
+    /// Sample Frame Info
+    /// </summary>
     public GPUSkinningFrame[] frames = null;
 
+    /// <summary>
+    /// Data StartIndex(Offset) in AnimDataFile
+    /// </summary>
     public int pixelSegmentation = 0;
 
     public bool rootMotionEnabled = false;

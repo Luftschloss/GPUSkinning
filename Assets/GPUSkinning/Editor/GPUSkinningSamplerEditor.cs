@@ -163,6 +163,7 @@ public class GPUSkinningSamplerEditor : Editor
                     }
                     else
                     {
+                        //采样第一个Clip开始
                         DestroyPreview();
                         LockInspector(true);
                         sampler.BeginSample();
@@ -1389,6 +1390,9 @@ public class GPUSkinningSamplerEditor : Editor
         }
     }
 
+    /// <summary>
+    /// 监测Sampler进度
+    /// </summary>
     private void UpdateHandler()
     {
         if(preview != null && EditorApplication.isPlaying)
@@ -1425,6 +1429,7 @@ public class GPUSkinningSamplerEditor : Editor
 
         if(!sampler.isSampling && sampler.IsSamplingProgress())
         {
+            //StartSample未完成的片段
             if (++sampler.samplingClipIndex < sampler.animClips.Length)
             {
                 sampler.StartSample();
