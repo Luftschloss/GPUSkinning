@@ -3,6 +3,12 @@
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
+
+        _ShadowColor("ShadowColor", Color) = (0,0,0,1)
+        _LightDir("LightDirection", Vector) = (0,90,0,0)
+        _ShadowFalloff("ShadowFalloff", Range(0, 1)) = 0
+
+        [KeywordEnum(BONE1, BONE2, BONE4)]_QUALITY("Skinning Quality", float) = 0
     }
     SubShader
     {
@@ -30,6 +36,7 @@
             #pragma vertex vert
             #pragma fragment frag
             #pragma multi_compile_instancing
+            #pragma multi_compile _QUALITY_BONE1 _QUALITY_BONE2 _QUALITY_BONE4
             #pragma multi_compile ROOTON_BLENDOFF ROOTON_BLENDON_CROSSFADEROOTON ROOTON_BLENDON_CROSSFADEROOTOFF ROOTOFF_BLENDOFF ROOTOFF_BLENDON_CROSSFADEROOTON ROOTOFF_BLENDON_CROSSFADEROOTOFF
 
             #include "UnityCG.cginc"
@@ -71,8 +78,17 @@
             {
                 UNITY_SETUP_INSTANCE_ID(v);
                 v2f o;
-                //通过skin4得到顶点在物体自身坐标系的位置信息
-                float4 position = skin4(v.vertex, v.uv2, v.uv3);
+
+                //通过skin得到顶点在物体自身坐标系的位置信息
+                float4 position;
+                #if _QUALITY_BONE1
+                position = skin1(v.vertex, v.uv2, v.uv3);
+                #elif _QUALITY_BONE2
+                position = skin2(v.vertex, v.uv2, v.uv3);
+                #elif _QUALITY_BONE4
+                position = skin4(v.vertex, v.uv2, v.uv3);
+                #endif
+
                 float3 shadowPos = ShadowProjectPos(position);
                 o.pos = UnityWorldToClipPos(shadowPos);
 
