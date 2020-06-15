@@ -64,7 +64,7 @@ ENDCG
         // Blend [_SrcBlend] [_DstBlend]
         ZWrite [_ZWrite]
  
-    CGPROGRAM
+        CGPROGRAM
         #pragma target 3.0
         // TEMPORARY: GLES2.0 temporarily disabled to prevent errors spam on devices without textureCubeLodEXT
         #pragma exclude_renderers gles
@@ -81,8 +81,10 @@ ENDCG
         // may not need these (not sure)
         // #pragma multi_compile_fwdbase
         // #pragma multi_compile_fog
- 
-        #pragma surface surf Standard vertex:myvert finalcolor:final fullforwardshadows // Opaque or Cutout
+
+        // refer to surface shader keyword:addshadow & fullforwardshadows
+		#pragma surface surf Standard vertex:myvert finalcolor:final addshadow
+        // #pragma surface surf Standard vertex:myvert finalcolor:final fullforwardshadows // Opaque or Cutout
         // #pragma surface surf Standard vertex:vert finalcolor:final fullforwardshadows alpha:fade // Fade
         // #pragma surface surf Standard vertex:vert finalcolor:final fullforwardshadows alpha:premul // Transparent
 

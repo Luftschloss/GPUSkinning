@@ -87,7 +87,9 @@ ENDCG
         // #pragma multi_compile_fwdbase
         // #pragma multi_compile_fog
  
-        #pragma surface surfSpecular StandardSpecular vertex:myvert finalcolor:finalSpecular fullforwardshadows // Opaque or Cutout
+        // refer to surface shader keyword:addshadow & fullforwardshadows
+		#pragma surface surfSpecular StandardSpecular vertex:myvert finalcolor:finalSpecular addshadow
+        // #pragma surface surfSpecular StandardSpecular vertex:myvert finalcolor:finalSpecular fullforwardshadows // Opaque or Cutout
         // #pragma surface surfSpecular StandardSpecular vertex:vert finalcolor:finalSpecular fullforwardshadows alpha:fade // Fade
         // #pragma surface surfSpecular StandardSpecular vertex:vert finalcolor:finalSpecular fullforwardshadows alpha:premul // Transparent
 

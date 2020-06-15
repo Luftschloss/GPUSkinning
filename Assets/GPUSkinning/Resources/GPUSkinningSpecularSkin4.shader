@@ -42,6 +42,11 @@
 		[HideInInspector] _SrcBlend ("__src", Float) = 1.0
 		[HideInInspector] _DstBlend ("__dst", Float) = 0.0
 		[HideInInspector] _ZWrite ("__zw", Float) = 1.0
+
+        // _ShadowColor("ShadowColor", Color) = (0,0,0,1)
+        // _LightDir("LightDirection", Vector) = (0,90,0,0)
+        // _ShadowFalloff("ShadowFalloff", Range(0, 1)) = 0
+        // [KeywordEnum(BONE1, BONE2, BONE4)]_QUALITY("Skinning Quality", float) = 0
     }
  
 CGINCLUDE
@@ -86,8 +91,10 @@ ENDCG
         // may not need these (not sure)
         // #pragma multi_compile_fwdbase
         // #pragma multi_compile_fog
- 
-        #pragma surface surfSpecular StandardSpecular vertex:myvert finalcolor:finalSpecular fullforwardshadows // Opaque or Cutout
+
+        // refer to surface shader keyword:addshadow & fullforwardshadows
+		#pragma surface surfSpecular StandardSpecular vertex:myvert finalcolor:finalSpecular addshadow
+        // #pragma surface surfSpecular StandardSpecular vertex:myvert finalcolor:finalSpecular fullforwardshadows // Opaque or Cutout
         // #pragma surface surfSpecular StandardSpecular vertex:vert finalcolor:finalSpecular fullforwardshadows alpha:fade // Fade
         // #pragma surface surfSpecular StandardSpecular vertex:vert finalcolor:finalSpecular fullforwardshadows alpha:premul // Transparent
 
@@ -120,9 +127,10 @@ ENDCG
  
         // For some reason SHADOWCASTER works. Not ShadowCaster.
         // UsePass "Standard/ShadowCaster"
-        UsePass "Standard/SHADOWCASTER"
+
+        // UsePass "GPUSkinning/GPUSkinningPlaneShadow/PlaneShadow"
     }
  
     FallBack Off
-    CustomEditor "GPUSkinningStandardShaderGUI"
+    //CustomEditor "GPUSkinningStandardShaderGUI"
 }
