@@ -959,7 +959,7 @@ public class GPUSkinningSampler : MonoBehaviour
             string shaderName =
                 shaderType == GPUSkinningShaderType.Unlit ? "GPUSkinning/GPUSkinning_Unlit_Skin" :
                 shaderType == GPUSkinningShaderType.StandardSpecular ? "GPUSkinning/GPUSkinning_Specular_Skin" :
-                shaderType == GPUSkinningShaderType.StandardMetallic ? "GPUSkinning_Metallic_Skin" : string.Empty;
+                shaderType == GPUSkinningShaderType.StandardMetallic ? "GPUSkinning/GPUSkinning_Metallic_Skin" : string.Empty;
             shaderName +=
                 skinQuality == GPUSkinningQuality.Bone1 ? 1 :
                 skinQuality == GPUSkinningQuality.Bone2 ? 2 :
@@ -967,7 +967,6 @@ public class GPUSkinningSampler : MonoBehaviour
             shader = Shader.Find(shaderName);
             WriteTempData(TEMP_SAVED_SHADER_PATH, AssetDatabase.GetAssetPath(shader));
         }
-
 		Material mtrl = new Material(shader);
 		if(smr.sharedMaterial != null)
 		{
