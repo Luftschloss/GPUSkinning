@@ -511,6 +511,18 @@ public class GPUSkinningSampler : MonoBehaviour
 		newMesh.SetUVs(2, new List<Vector4>(uv3));
 
         newMesh.triangles = mesh.triangles;
+
+        //copy submesh info
+        newMesh.subMeshCount = mesh.subMeshCount;
+        for (int i = 0; i < mesh.subMeshCount; i++)
+        {
+            int[] indies = mesh.GetIndices(i);
+            MeshTopology meshTopology = mesh.GetTopology(i);
+            newMesh.SetIndices(indies, meshTopology, i);
+            int[] triangles = mesh.GetTriangles(i);
+            newMesh.SetTriangles(triangles, i);
+        }
+
         return newMesh;
     }
 
