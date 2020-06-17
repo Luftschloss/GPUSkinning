@@ -268,7 +268,8 @@ public class GPUSkinningSampler : MonoBehaviour
             }
         }
 
-        Debug.Log("StartSample==>" + animClip.name + "==>" + numFrames + "OverrideClipIdx:" + overrideClipIndex + "\n" + new StackTrace().ToString());
+        Debug.Log(string.Format("StartSample:{0} numFrames:{1} OverrideClipIdx:{2} ClipLen{3} \n {4}", animClip.name, numFrames, overrideClipIndex, animClip.length, new StackTrace().ToString()));
+
         //new SampleClip
         gpuSkinningClip = new GPUSkinningClip();
         //SetSampleCilpInfo from SampleClips in Inspector
@@ -375,22 +376,30 @@ public class GPUSkinningSampler : MonoBehaviour
     }
 
     /// <summary>
+    /// Core Function: Prepared Step
     /// Animator Play PreWork
+    /// Why Prepare????
     /// </summary>
     private void PrepareRecordAnimator()
     {
         if (animator != null)
         {
+            //record total frame
             int numFrames = (int)(gpuSkinningClip.fps * gpuSkinningClip.length);
 
             animator.applyRootMotion = gpuSkinningClip.rootMotionEnabled;
+            //rebind all the animated properties and mesh data with the Animator
             animator.Rebind();
             animator.recorderStartTime = 0;
+            //numFrames=0 recording continue until the user calls StopRecording
+            //numFrames maximum value is 10000
+            //start record
             animator.StartRecording(numFrames);
             for (int i = 0; i < numFrames; ++i)
             {
                 animator.Update(1.0f / gpuSkinningClip.fps);
             }
+            //stop record
             animator.StopRecording();
             animator.StartPlayback();
         }
@@ -579,6 +588,7 @@ public class GPUSkinningSampler : MonoBehaviour
     }
 
     /// <summary>
+    /// Core Function:Store Bone Animation Info
     /// Write Matries Texture(*3x4:ignore last raw(0,0,0,1))
     /// </summary>
     /// <param name="dir"></param>
@@ -624,6 +634,7 @@ public class GPUSkinningSampler : MonoBehaviour
 
     /// <summary>
     /// CalculateTextureSize by pixels
+    /// width first then height
     /// </summary>
     /// <param name="numPixels"></param>
     /// <param name="texWidth"></param>

@@ -9,6 +9,9 @@ public class GPUSkinningClip
 {
     public string name = null;
 
+    /// <summary>
+    /// AnimationClip length
+    /// </summary>
     public float length = 0.0f;
 
     public int fps = 0;
