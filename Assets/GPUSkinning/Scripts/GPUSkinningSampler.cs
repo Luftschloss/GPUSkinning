@@ -1012,8 +1012,8 @@ public class GPUSkinningSampler : MonoBehaviour
 			skinQuality == GPUSkinningQuality.Bone2 ? GPUSkinningQuality.Bone4 : 
 			skinQuality == GPUSkinningQuality.Bone4 ? GPUSkinningQuality.Bone2 : GPUSkinningQuality.Bone1;
 
-		shaderStr = Regex.Replace(shaderStr, @"_\$" + removalQuality1 + @"[\s\S]*" + removalQuality1 + @"\$_", string.Empty);
-		shaderStr = Regex.Replace(shaderStr, @"_\$" + removalQuality2 + @"[\s\S]*" + removalQuality2 + @"\$_", string.Empty);
+		shaderStr = Regex.Replace(shaderStr, @"_\$" + removalQuality1 + @"[\s\S]*?" + removalQuality1 + @"\$_", string.Empty);
+		shaderStr = Regex.Replace(shaderStr, @"_\$" + removalQuality2 + @"[\s\S]*?" + removalQuality2 + @"\$_", string.Empty);
 		shaderStr = shaderStr.Replace("_$" + skinQuality, string.Empty);
 		shaderStr = shaderStr.Replace(skinQuality + "$_", string.Empty);
 
