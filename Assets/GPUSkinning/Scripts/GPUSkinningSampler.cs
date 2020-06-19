@@ -955,7 +955,7 @@ public class GPUSkinningSampler : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// if need new shader create(clone by bonetype)
     /// </summary>
     /// <param name="dir"></param>
 	private void CreateShaderAndMaterial(string dir)

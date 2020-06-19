@@ -4,6 +4,9 @@ using System.Security.Cryptography;
 
 public class GPUSkinningUtil
 {
+    /// <summary>
+    /// mark all loaded scene need to refresh
+    /// </summary>
     public static void MarkAllScenesDirty()
     {
 #if UNITY_EDITOR

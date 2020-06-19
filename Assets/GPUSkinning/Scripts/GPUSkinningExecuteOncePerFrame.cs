@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ???
+/// </summary>
 public class GPUSkinningExecuteOncePerFrame
 {
     private int frameCount = -1;

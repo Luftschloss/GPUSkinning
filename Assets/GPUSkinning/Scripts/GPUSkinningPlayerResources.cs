@@ -25,6 +25,9 @@ public class GPUSkinningPlayerResources
 
     private CullingGroup cullingGroup = null;
 
+    /// <summary>
+    /// BoundingSphere List
+    /// </summary>
     private GPUSkinningBetterList<BoundingSphere> cullingBounds = new GPUSkinningBetterList<BoundingSphere>(100);
 
     private GPUSkinningMaterial[] mtrls = null;
@@ -47,6 +50,8 @@ public class GPUSkinningPlayerResources
             time = value;
         }
     }
+
+    //SPUSkinning Shader PropertyID
 
     private static int shaderPropID_GPUSkinning_TextureMatrix = -1;
 
@@ -73,6 +78,10 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// destructor
+    /// 
+    /// </summary>
     ~GPUSkinningPlayerResources()
     {
         DestroyCullingGroup();
@@ -114,6 +123,9 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// CullingBounds Setting
+    /// </summary>
     public void AddCullingBounds()
     {
         if (cullingGroup == null)
@@ -122,6 +134,7 @@ public class GPUSkinningPlayerResources
             cullingGroup.targetCamera = Camera.main;
             cullingGroup.SetBoundingDistances(anim.lodDistances);
             cullingGroup.SetDistanceReferencePoint(Camera.main.transform);
+            //LOD Change Trigger
             cullingGroup.onStateChanged = OnLodCullingGroupOnStateChangedHandler;
         }
 
@@ -137,6 +150,11 @@ public class GPUSkinningPlayerResources
         cullingGroup.SetBoundingSphereCount(players.Count);
     }
 
+    #region LOD
+    /// <summary>
+    /// Lod Enable Changed
+    /// </summary>
+    /// <param name="player"></param>
     public void LODSettingChanged(GPUSkinningPlayer player)
     {
         if(player.LODEnabled)
@@ -158,6 +176,11 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// CullingGroup Changed Handler
+    /// Update LOD
+    /// </summary>
+    /// <param name="evt"></param>
     private void OnLodCullingGroupOnStateChangedHandler(CullingGroupEvent evt)
     {
         GPUSkinningPlayerMono player = players[evt.index];
@@ -169,15 +192,6 @@ public class GPUSkinningPlayerResources
         else
         {
             player.Player.Visible = false;
-        }
-    }
-
-    private void DestroyCullingGroup()
-    {
-        if (cullingGroup != null)
-        {
-            cullingGroup.Dispose();
-            cullingGroup = null;
         }
     }
 
@@ -197,6 +211,17 @@ public class GPUSkinningPlayerResources
         player.SetLODMesh(lodMesh);
     }
 
+    #endregion
+
+    private void DestroyCullingGroup()
+    {
+        if (cullingGroup != null)
+        {
+            cullingGroup.Dispose();
+            cullingGroup = null;
+        }
+    }
+
     private void UpdateCullingBounds()
     {
         int numPlayers = players.Count;
@@ -210,6 +235,11 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// Core Function:update time to material
+    /// </summary>
+    /// <param name="deltaTime"></param>
+    /// <param name="mtrl"></param>
     public void Update(float deltaTime, GPUSkinningMaterial mtrl)
     {
         if (executeOncePerFrame.CanBeExecute())
@@ -224,7 +254,7 @@ public class GPUSkinningPlayerResources
             mtrl.executeOncePerFrame.MarkAsExecuted();
             mtrl.material.SetTexture(shaderPropID_GPUSkinning_TextureMatrix, texture);
             mtrl.material.SetVector(shaderPropID_GPUSkinning_TextureSize_NumPixelsPerFrame, 
-                new Vector4(anim.textureWidth, anim.textureHeight, anim.bones.Length * 3/*treat 3 pixels as a float3x4*/, 0));
+                new Vector4(anim.textureWidth, anim.textureHeight, anim.bones.Length * 3, 0));
         }
     }
 
@@ -266,6 +296,11 @@ public class GPUSkinningPlayerResources
         return mtrls[(int)state];
     }
 
+    /// <summary>
+    /// init material
+    /// </summary>
+    /// <param name="originalMaterial"></param>
+    /// <param name="hideFlags"></param>
     public void InitMaterial(Material originalMaterial, HideFlags hideFlags)
     {
         if(mtrls != null)
@@ -285,6 +320,11 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// ????
+    /// </summary>
+    /// <param name="ki"></param>
+    /// <param name="mtrl"></param>
     private void EnableKeywords(int ki, GPUSkinningMaterial mtrl)
     {
         for(int i = 0; i < mtrls.Length; ++i)

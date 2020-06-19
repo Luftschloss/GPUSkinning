@@ -17,6 +17,10 @@ public class GPUSkinningPlayerMono : MonoBehaviour
 
     [HideInInspector]
     [SerializeField]
+    private Material subMtrl = null;
+
+    [HideInInspector]
+    [SerializeField]
     private TextAsset textureRawData = null;
 
     [HideInInspector]
@@ -89,20 +93,11 @@ public class GPUSkinningPlayerMono : MonoBehaviour
             player.RootMotionEnabled = Application.isPlaying ? rootMotionEnabled : false;
             player.LODEnabled = Application.isPlaying ? lodEnabled : false;
             player.CullingMode = cullingMode;
-            player.onAnimEvent += Player_onAnimEvent;
 
             if (anim != null && anim.clips != null && anim.clips.Length > 0)
             {
                 player.Play(anim.clips[Mathf.Clamp(defaultPlayingClipIndex, 0, anim.clips.Length)].name);
             }
-        }
-    }
-
-    private void Player_onAnimEvent(GPUSkinningPlayer player, int eventId)
-    {
-        if(eventId == 1)
-        {
-            Debug.Log("Die");
         }
     }
 

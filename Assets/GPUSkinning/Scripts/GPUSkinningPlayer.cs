@@ -2,6 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 
+/// <summary>
+/// one gpuskinning instance, one GPUSkinningPlayer
+/// </summary>
 public class GPUSkinningPlayer
 {
     public delegate void OnAnimEvent(GPUSkinningPlayer player, int eventId);
@@ -34,6 +37,9 @@ public class GPUSkinningPlayer
 
     private GPUSkinningPlayerResources res = null;
 
+    /// <summary>
+    /// use for set material property
+    /// </summary>
     private MaterialPropertyBlock mpb = null;
 
     private int rootMotionFrameIndex = -1;
@@ -247,6 +253,7 @@ public class GPUSkinningPlayer
 
     public void CrossFade(string clipName, float fadeLength)
     {
+        //no playingClip play new directly
         if (playingClip == null)
         {
             Play(clipName);
@@ -452,26 +459,31 @@ public class GPUSkinningPlayer
                 DoRootMotion(frame, blend_crossFade, true);
             }
         }
-
         UpdateEvents(playingClip, frameIndex, frame_crossFade == null ? null : lastPlayedClip, frameIndex_crossFade);
     }
 
+    /// <summary>
+    /// Get CurrentState Material
+    /// 
+    /// </summary>
+    /// <returns></returns>
     private GPUSkinningMaterial GetCurrentMaterial()
     {
-        if(res == null)
+        if (res == null)
         {
             return null;
         }
-
-        if(playingClip == null)
+        //no playingClip[RootOff_BlendOff]
+        if (playingClip == null)
         {
             return res.GetMaterial(GPUSkinningPlayerResources.MaterialState.RootOff_BlendOff);
         }
-        if(playingClip.rootMotionEnabled && rootMotionEnabled)
+        //both clipSet and monoSet root is enable
+        if (playingClip.rootMotionEnabled && rootMotionEnabled)
         {
-            if(res.IsCrossFadeBlending(lastPlayedClip, crossFadeTime, crossFadeProgress))
+            if (res.IsCrossFadeBlending(lastPlayedClip, crossFadeTime, crossFadeProgress))
             {
-                if(lastPlayedClip.rootMotionEnabled)
+                if (lastPlayedClip.rootMotionEnabled)
                 {
                     return res.GetMaterial(GPUSkinningPlayerResources.MaterialState.RootOn_BlendOn_CrossFadeRootOn);
                 }
@@ -479,7 +491,7 @@ public class GPUSkinningPlayer
             }
             return res.GetMaterial(GPUSkinningPlayerResources.MaterialState.RootOn_BlendOff);
         }
-        if(res.IsCrossFadeBlending(lastPlayedClip, crossFadeTime, crossFadeProgress))
+        if (res.IsCrossFadeBlending(lastPlayedClip, crossFadeTime, crossFadeProgress))
         {
             if (lastPlayedClip.rootMotionEnabled)
             {

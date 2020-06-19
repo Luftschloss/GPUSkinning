@@ -1,5 +1,9 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// customer list type
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public class GPUSkinningBetterList<T>
 {
     public T[] buffer;
