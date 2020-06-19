@@ -11,7 +11,7 @@
 
         Pass
         {
-            Name "ShadowCaster"
+            Name "UnityShadowCaster"
             Tags { "LightMode" = "ShadowCaster" }
  
             ZWrite On ZTest LEqual Cull Off
