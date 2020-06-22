@@ -990,14 +990,16 @@ public class GPUSkinningSampler : MonoBehaviour
             shader = Shader.Find(shaderName);
             WriteTempData(TEMP_SAVED_SHADER_PATH, AssetDatabase.GetAssetPath(shader));
         }
-		Material mtrl = new Material(shader);
-		if(smr.sharedMaterial != null)
-		{
-			mtrl.CopyPropertiesFromMaterial(smr.sharedMaterial);
-		}
-		string savedMtrlPath = dir + "/GPUSKinning_Material_" + animName + ".mat";
-		AssetDatabase.CreateAsset(mtrl, savedMtrlPath);
-        WriteTempData(TEMP_SAVED_MTRL_PATH, savedMtrlPath);
+
+        for (int i = 0; i < smr.sharedMaterials.Length; i++)
+        {
+            Material mtrl = new Material(shader);
+            mtrl.CopyPropertiesFromMaterial(smr.sharedMaterials[i]);
+            string savedMtrlPath = dir + "/GPUSKinning_Material_" + animName + i + ".mat";
+            AssetDatabase.CreateAsset(mtrl, savedMtrlPath);
+            if (i == 0)
+                WriteTempData(TEMP_SAVED_MTRL_PATH, savedMtrlPath);
+        }
 	}
 
 	private string SkinQualityShaderStr(string shaderStr)

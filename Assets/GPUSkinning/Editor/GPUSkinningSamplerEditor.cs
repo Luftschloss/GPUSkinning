@@ -1558,7 +1558,7 @@ public class GPUSkinningSamplerEditor : Editor
             obj = AssetDatabase.LoadMainAssetAtPath(GPUSkinningSampler.ReadTempData(GPUSkinningSampler.TEMP_SAVED_MTRL_PATH));
             if (obj != null && obj is Material)
             {
-                serializedObject.FindProperty("savedMtrl").objectReferenceValue = obj;
+                serializedObject.FindProperty("savedMtrls").objectReferenceValue = obj;
             }
 
             obj = AssetDatabase.LoadMainAssetAtPath(GPUSkinningSampler.ReadTempData(GPUSkinningSampler.TEMP_SAVED_SHADER_PATH));
