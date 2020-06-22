@@ -224,7 +224,7 @@ public class GPUSkinningPlayer
         }
 
         GPUSkinningMaterial mtrl = GetCurrentMaterial();
-        mr.sharedMaterial = mtrl == null ? null : mtrl.material;
+        mr.materials = mtrl == null ? null : mtrl.materials;
         mf.sharedMesh = res.mesh;
 
         mpb = new MaterialPropertyBlock();
@@ -356,9 +356,12 @@ public class GPUSkinningPlayer
             return;    
         }
 
-        if(mr.sharedMaterial != currMtrl.material)
+        for (int i = 0; i < currMtrl.materials.Length; i++)
         {
-            mr.sharedMaterial = currMtrl.material;
+            if (mr.sharedMaterials != currMtrl.materials)
+            {
+                mr.sharedMaterials = currMtrl.materials;
+            }
         }
 
         if (playingClip.wrapMode == GPUSkinningWrapMode.Loop)

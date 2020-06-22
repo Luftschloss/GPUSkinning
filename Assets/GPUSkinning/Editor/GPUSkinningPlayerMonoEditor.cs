@@ -10,6 +10,13 @@ public class GPUSkinningPlayerMonoEditor : Editor
 
     private string[] clipsName = null;
 
+    SerializedProperty m_Materials;
+
+    private void OnEnable()
+    {
+        m_Materials = serializedObject.FindProperty("mtrls");
+    }
+
     public override void OnInspectorGUI()
     {
         GPUSkinningPlayerMono player = target as GPUSkinningPlayerMono;
@@ -37,7 +44,7 @@ public class GPUSkinningPlayerMonoEditor : Editor
         }
 
         EditorGUI.BeginChangeCheck();
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("mtrl"));
+        EditorGUILayout.PropertyField(m_Materials, true);
         if (EditorGUI.EndChangeCheck())
         {
             serializedObject.ApplyModifiedProperties();

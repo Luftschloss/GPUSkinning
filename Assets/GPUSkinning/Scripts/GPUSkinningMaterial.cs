@@ -4,16 +4,20 @@ using UnityEngine;
 
 public class GPUSkinningMaterial
 {
-    public Material material = null;
+    public Material[] materials = null;
 
     public GPUSkinningExecuteOncePerFrame executeOncePerFrame = new GPUSkinningExecuteOncePerFrame();
 
     public void Destroy()
     {
-        if(material != null)
+        if (materials != null)
         {
-            Object.Destroy(material);
-            material = null;
+            for (int i = 0; i < materials.Length; i++)
+            {
+                Object.Destroy(materials[i]);
+                materials[i] = null;
+            }
+            materials = null;
         }
     }
 }

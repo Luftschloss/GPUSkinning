@@ -4,13 +4,16 @@ using UnityEngine;
 
 public class GPUSkinningPlayerMonoManager
 {
+    /// <summary>
+    /// one GPUSkinningAnimation apply to one GPUSkinningPlayerResources
+    /// </summary>
     private List<GPUSkinningPlayerResources> items = new List<GPUSkinningPlayerResources>();
 
-    public void Register(GPUSkinningAnimation anim, Mesh mesh, Material originalMtrl, TextAsset textureRawData, GPUSkinningPlayerMono player, out GPUSkinningPlayerResources resources)
+    public void Register(GPUSkinningAnimation anim, Mesh mesh, Material[] originalMtrls, TextAsset textureRawData, GPUSkinningPlayerMono player, out GPUSkinningPlayerResources resources)
     {
         resources = null;
 
-        if (anim == null || originalMtrl == null || textureRawData == null || player == null)
+        if (anim == null || originalMtrls == null || textureRawData == null || player == null)
         {
             return;
         }
@@ -43,7 +46,7 @@ public class GPUSkinningPlayerMonoManager
             item.mesh = mesh;
         }
 
-        item.InitMaterial(originalMtrl, HideFlags.None);
+        item.InitMaterial(originalMtrls, HideFlags.None);
 
         if(item.texture == null)
         {

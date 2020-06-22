@@ -101,7 +101,7 @@ public class GPUSkinningSampler : MonoBehaviour
 
     [HideInInspector]
     [SerializeField]
-    public Material savedMtrl = null;
+    public Material[] savedMtrls = null;
 
     [HideInInspector]
     [SerializeField]

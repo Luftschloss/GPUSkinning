@@ -12,7 +12,7 @@ public class GPUSkinningSamplerEditor : Editor
 
 	private Mesh mesh = null;
 
-	private Material mtrl = null;
+	private Material[] mtrls = null;
 
     private TextAsset texture = null;
 
@@ -115,7 +115,7 @@ public class GPUSkinningSamplerEditor : Editor
                 EditorGUILayout.BeginHorizontal();
                 {
                     GUILayout.FlexibleSpace();
-                    EditorGUILayout.PropertyField(serializedObject.FindProperty("savedMtrl"), new GUIContent());
+                    EditorGUILayout.PropertyField(serializedObject.FindProperty("savedMtrls"), new GUIContent());
                 }
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.BeginHorizontal();
@@ -385,13 +385,13 @@ public class GPUSkinningSamplerEditor : Editor
             {
                 anim = sampler.anim;
                 mesh = sampler.savedMesh;
-                mtrl = sampler.savedMtrl;
+                mtrls = sampler.savedMtrls;
                 texture = sampler.texture;
                 if (mesh != null)
                 {
                     bounds = mesh.bounds;
                 }
-                if (anim == null || mesh == null || mtrl == null || texture == null)
+                if (anim == null || mesh == null || mtrls == null || texture == null)
                 {
                     EditorUtility.DisplayDialog("GPUSkinning", "Missing Sampling Resources", "OK");
                 }
@@ -429,7 +429,7 @@ public class GPUSkinningSamplerEditor : Editor
                         previewGo.transform.position = new Vector3(999, 999, 1002);
                         preview = previewGo.AddComponent<GPUSkinningPlayerMono>();
                         preview.hideFlags = HideFlags.HideAndDontSave;
-                        preview.Init(anim, mesh, mtrl, texture);
+                        preview.Init(anim, mesh, mtrls, texture);
                         preview.Player.RootMotionEnabled = rootMotionEnabled;
                         preview.Player.LODEnabled = false;
                         preview.Player.CullingMode = GPUSKinningCullingMode.AlwaysAnimate;

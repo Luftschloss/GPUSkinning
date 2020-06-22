@@ -11,9 +11,9 @@ public class GPUSkinningPlayerMono : MonoBehaviour
     [SerializeField]
     private Mesh mesh = null;
 
-    [HideInInspector]
-    [SerializeField]
-    private Material mtrl = null;
+    //[HideInInspector]
+    //[SerializeField]
+    public Material[] mtrls;
 
     [HideInInspector]
     [SerializeField]
@@ -46,7 +46,7 @@ public class GPUSkinningPlayerMono : MonoBehaviour
         }
     }
 
-    public void Init(GPUSkinningAnimation anim, Mesh mesh, Material mtrl, TextAsset textureRawData)
+    public void Init(GPUSkinningAnimation anim, Mesh mesh, Material[] mtrls, TextAsset textureRawData)
     {
         if(player != null)
         {
@@ -55,7 +55,7 @@ public class GPUSkinningPlayerMono : MonoBehaviour
 
         this.anim = anim;
         this.mesh = mesh;
-        this.mtrl = mtrl;
+        this.mtrls = mtrls;
         this.textureRawData = textureRawData;
         Init();
     }
@@ -67,20 +67,20 @@ public class GPUSkinningPlayerMono : MonoBehaviour
             return;
         }
 
-        if (anim != null && mesh != null && mtrl != null && textureRawData != null)
+        if (anim != null && mesh != null && mtrls != null && textureRawData != null)
         {
             GPUSkinningPlayerResources res = null;
 
             if (Application.isPlaying)
             {
-                playerManager.Register(anim, mesh, mtrl, textureRawData, this, out res);
+                playerManager.Register(anim, mesh, mtrls, textureRawData, this, out res);
             }
             else
             {
                 res = new GPUSkinningPlayerResources();
                 res.anim = anim;
                 res.mesh = mesh;
-                res.InitMaterial(mtrl, HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
+                res.InitMaterial(mtrls, HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor);
                 res.texture = GPUSkinningUtil.CreateTexture2D(textureRawData, anim);
                 res.texture.hideFlags = HideFlags.DontSaveInBuild | HideFlags.DontSaveInEditor;
             }
@@ -153,7 +153,7 @@ public class GPUSkinningPlayerMono : MonoBehaviour
         player = null;
         anim = null;
         mesh = null;
-        mtrl = null;
+        mtrls = null;
         textureRawData = null;
 
         if (Application.isPlaying)

@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// one GPUSkinningPlayerResources apply to a group of GPUSkinningPlayers with same GPUSkinningAniamtion(recognize by guid)
+/// </summary>
 public class GPUSkinningPlayerResources
 {
     public enum MaterialState
     {
-        RootOn_BlendOff = 0, 
+        RootOn_BlendOff = 0,
         RootOn_BlendOn_CrossFadeRootOn,
         RootOn_BlendOn_CrossFadeRootOff,
         RootOff_BlendOff,
         RootOff_BlendOn_CrossFadeRootOn,
-        RootOff_BlendOn_CrossFadeRootOff, 
+        RootOff_BlendOn_CrossFadeRootOff,
         Count = 6
     }
 
@@ -30,7 +33,7 @@ public class GPUSkinningPlayerResources
     /// </summary>
     private GPUSkinningBetterList<BoundingSphere> cullingBounds = new GPUSkinningBetterList<BoundingSphere>(100);
 
-    private GPUSkinningMaterial[] mtrls = null;
+    private GPUSkinningMaterial[] mtrls;
 
     private static string[] keywords = new string[] {
         "ROOTON_BLENDOFF", "ROOTON_BLENDON_CROSSFADEROOTON", "ROOTON_BLENDON_CROSSFADEROOTOFF",
@@ -92,7 +95,7 @@ public class GPUSkinningPlayerResources
         anim = null;
         mesh = null;
 
-        if(cullingBounds != null)
+        if (cullingBounds != null)
         {
             cullingBounds.Release();
             cullingBounds = null;
@@ -100,9 +103,9 @@ public class GPUSkinningPlayerResources
 
         DestroyCullingGroup();
 
-        if(mtrls != null)
+        if (mtrls != null)
         {
-            for(int i = 0; i < mtrls.Length; ++i)
+            for (int i = 0; i < mtrls.Length; i++)
             {
                 mtrls[i].Destroy();
                 mtrls[i] = null;
@@ -157,12 +160,12 @@ public class GPUSkinningPlayerResources
     /// <param name="player"></param>
     public void LODSettingChanged(GPUSkinningPlayer player)
     {
-        if(player.LODEnabled)
+        if (player.LODEnabled)
         {
             int numPlayers = players.Count;
-            for(int i = 0; i < numPlayers; ++i)
+            for (int i = 0; i < numPlayers; ++i)
             {
-                if(players[i].Player == player)
+                if (players[i].Player == player)
                 {
                     int distanceIndex = cullingGroup.GetDistance(i);
                     SetLODMeshByDistanceIndex(distanceIndex, players[i].Player);
@@ -184,7 +187,7 @@ public class GPUSkinningPlayerResources
     private void OnLodCullingGroupOnStateChangedHandler(CullingGroupEvent evt)
     {
         GPUSkinningPlayerMono player = players[evt.index];
-        if(evt.isVisible)
+        if (evt.isVisible)
         {
             SetLODMeshByDistanceIndex(evt.currentDistance, player.Player);
             player.Player.Visible = true;
@@ -252,9 +255,11 @@ public class GPUSkinningPlayerResources
         if (mtrl.executeOncePerFrame.CanBeExecute())
         {
             mtrl.executeOncePerFrame.MarkAsExecuted();
-            mtrl.material.SetTexture(shaderPropID_GPUSkinning_TextureMatrix, texture);
-            mtrl.material.SetVector(shaderPropID_GPUSkinning_TextureSize_NumPixelsPerFrame, 
-                new Vector4(anim.textureWidth, anim.textureHeight, anim.bones.Length * 3, 0));
+            for (int i = 0; i < mtrl.materials.Length; i++)
+            {
+                mtrl.materials[i].SetTexture(shaderPropID_GPUSkinning_TextureMatrix, texture);
+                mtrl.materials[i].SetVector(shaderPropID_GPUSkinning_TextureSize_NumPixelsPerFrame, new Vector4(anim.textureWidth, anim.textureHeight, anim.bones.Length * 3, 0));
+            }
         }
     }
 
@@ -301,9 +306,9 @@ public class GPUSkinningPlayerResources
     /// </summary>
     /// <param name="originalMaterial"></param>
     /// <param name="hideFlags"></param>
-    public void InitMaterial(Material originalMaterial, HideFlags hideFlags)
+    public void InitMaterial(Material[] originalMaterials, HideFlags hideFlags)
     {
-        if(mtrls != null)
+        if (mtrls != null)
         {
             return;
         }
@@ -312,11 +317,15 @@ public class GPUSkinningPlayerResources
 
         for (int i = 0; i < mtrls.Length; ++i)
         {
-            mtrls[i] = new GPUSkinningMaterial() { material = new Material(originalMaterial) };
-            mtrls[i].material.name = keywords[i];
-            mtrls[i].material.hideFlags = hideFlags;
-            mtrls[i].material.enableInstancing = true; // enable instancing in Unity 5.6
-            EnableKeywords(i, mtrls[i]);
+            mtrls[i] = new GPUSkinningMaterial() { materials = new Material[originalMaterials.Length] };
+            for (int j = 0; j < originalMaterials.Length; j++)
+            {
+                mtrls[i].materials[j] = new Material(originalMaterials[j]);
+                mtrls[i].materials[j].name = keywords[i];
+                mtrls[i].materials[j].hideFlags = hideFlags;
+                mtrls[i].materials[j].enableInstancing = true; // enable instancing in Unity 5.6
+                //EnableKeywords(i, mtrls[i]);
+            }
         }
     }
 
@@ -327,15 +336,21 @@ public class GPUSkinningPlayerResources
     /// <param name="mtrl"></param>
     private void EnableKeywords(int ki, GPUSkinningMaterial mtrl)
     {
-        for(int i = 0; i < mtrls.Length; ++i)
+        for (int i = 0; i < mtrls.Length; ++i)
         {
-            if(i == ki)
+            if (i == ki)
             {
-                mtrl.material.EnableKeyword(keywords[i]);
+                for (int j = 0; j < mtrl.materials.Length; j++)
+                {
+                    mtrl.materials[j].EnableKeyword(keywords[i]);
+                }
             }
             else
             {
-                mtrl.material.DisableKeyword(keywords[i]);
+                for (int j = 0; j < mtrl.materials.Length; j++)
+                {
+                    mtrl.materials[j].DisableKeyword(keywords[i]);
+                }
             }
         }
     }
