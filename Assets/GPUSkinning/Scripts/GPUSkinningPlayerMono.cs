@@ -17,10 +17,6 @@ public class GPUSkinningPlayerMono : MonoBehaviour
 
     [HideInInspector]
     [SerializeField]
-    private Material subMtrl = null;
-
-    [HideInInspector]
-    [SerializeField]
     private TextAsset textureRawData = null;
 
     [HideInInspector]
