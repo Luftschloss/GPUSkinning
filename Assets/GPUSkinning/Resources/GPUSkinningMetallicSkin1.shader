@@ -117,7 +117,7 @@ ENDCG
  
         // For some reason SHADOWCASTER works. Not ShadowCaster.
         // UsePass "Standard/ShadowCaster"
-        UsePass "Standard/SHADOWCASTER"
+        // UsePass "Standard/SHADOWCASTER"
     }
  
     FallBack Off
