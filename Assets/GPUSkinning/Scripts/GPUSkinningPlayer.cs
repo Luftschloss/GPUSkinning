@@ -438,6 +438,7 @@ public class GPUSkinningPlayer
         }
 
         GPUSkinningFrame frame = playingClip.frames[frameIndex];
+        // Visible Update
         if (Visible || CullingMode == GPUSKinningCullingMode.AlwaysAnimate)
         {
             res.Update(deltaTime, currMtrl);
@@ -463,6 +464,7 @@ public class GPUSkinningPlayer
 
     /// <summary>
     /// Get CurrentState Material
+    /// before set lastPlayedClip
     /// </summary>
     /// <returns></returns>
     private GPUSkinningMaterial GetCurrentMaterial()
@@ -476,7 +478,8 @@ public class GPUSkinningPlayer
         {
             return res.GetMaterial(GPUSkinningPlayerResources.MaterialState.RootOff_BlendOff);
         }
-        //both clipSet and monoSet root is enable
+        //current clip rootMotionOn
+        //[both SampleClipSet and MonoSet root is enable
         if (playingClip.rootMotionEnabled && rootMotionEnabled)
         {
             if (res.IsCrossFadeBlending(lastPlayedClip, crossFadeTime, crossFadeProgress))
@@ -489,6 +492,7 @@ public class GPUSkinningPlayer
             }
             return res.GetMaterial(GPUSkinningPlayerResources.MaterialState.RootOn_BlendOff);
         }
+        //current clip rootMotionOff
         if (res.IsCrossFadeBlending(lastPlayedClip, crossFadeTime, crossFadeProgress))
         {
             if (lastPlayedClip.rootMotionEnabled)
@@ -558,6 +562,10 @@ public class GPUSkinningPlayer
         }
     }
 
+    /// <summary>
+    /// GetFrameIndex in CrossFade Process
+    /// </summary>
+    /// <returns></returns>
     private int GetCrossFadeFrameIndex()
     {
         if (lastPlayedClip == null)

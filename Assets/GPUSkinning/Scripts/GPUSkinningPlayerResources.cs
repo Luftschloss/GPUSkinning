@@ -4,13 +4,44 @@ using UnityEngine;
 
 public class GPUSkinningPlayerResources
 {
+    /// <summary>
+    /// Root        
+    /// Blend CrossFade    
+    /// (CrossFade == Blend)
+    /// </summary>
     public enum MaterialState
     {
-        RootOn_BlendOff = 0, 
+        /// <summary>
+        /// Default
+        /// RootOn
+        /// </summary>
+        RootOn_BlendOff = 0,
+        /// <summary>
+        /// Blend:
+        /// Last RootOn Cur RootOn(one frame)
+        /// Cur RootOn In CrossFade
+        /// </summary>
         RootOn_BlendOn_CrossFadeRootOn,
+        /// <summary>
+        /// Blend:
+        /// Last RootOn Cur RootOff(one frame)
+        /// </summary>
         RootOn_BlendOn_CrossFadeRootOff,
+        /// <summary>
+        /// Default
+        /// RootOff
+        /// </summary>
         RootOff_BlendOff,
+        /// <summary>
+        /// Blend:
+        /// Last RootOn Cur RootOff(one frame)
+        /// Cur RootOff InCrossFade
+        /// </summary>
         RootOff_BlendOn_CrossFadeRootOn,
+        /// <summary>
+        /// Blend:
+        /// Last RootOff Cur RootOn(one frame)
+        /// </summary>
         RootOff_BlendOn_CrossFadeRootOff, 
         Count = 6
     }
@@ -308,11 +339,27 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// Get Percent value of CrossFade Process
+    /// </summary>
+    /// <param name="crossFadeProgress"></param>
+    /// <param name="crossFadeTime"></param>
+    /// <returns></returns>
     public float CrossFadeBlendFactor(float crossFadeProgress, float crossFadeTime)
     {
         return Mathf.Clamp01(crossFadeProgress / crossFadeTime);
     }
 
+    /// <summary>
+    /// Check is CrossFadeBlending
+    /// no lastPlayedClip no crossFaade
+    /// crossFadeTime       (crossfade len)
+    /// crossFadeProgress   (initValue zero when crossfade start)
+    /// </summary>
+    /// <param name="lastPlayedClip"></param>
+    /// <param name="crossFadeTime"></param>
+    /// <param name="crossFadeProgress"></param>
+    /// <returns></returns>
     public bool IsCrossFadeBlending(GPUSkinningClip lastPlayedClip, float crossFadeTime, float crossFadeProgress)
     {
         return lastPlayedClip != null && crossFadeTime > 0 && crossFadeProgress <= crossFadeTime;
