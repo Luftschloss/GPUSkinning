@@ -360,7 +360,6 @@ public class GPUSkinningPlayer
         {
             mr.sharedMaterial = currMtrl.material;
         }
-
         if (playingClip.wrapMode == GPUSkinningWrapMode.Loop)
         {
             UpdateMaterial(timeDelta, currMtrl);
@@ -419,6 +418,7 @@ public class GPUSkinningPlayer
     private void UpdateMaterial(float deltaTime, GPUSkinningMaterial currMtrl)
     {
         int frameIndex = GetFrameIndex();
+        //end of once clip
         if(lastPlayingClip == playingClip && lastPlayingFrameIndex == frameIndex)
         {
             res.Update(deltaTime, currMtrl);
@@ -438,8 +438,7 @@ public class GPUSkinningPlayer
         }
 
         GPUSkinningFrame frame = playingClip.frames[frameIndex];
-        if (Visible || 
-            CullingMode == GPUSKinningCullingMode.AlwaysAnimate)
+        if (Visible || CullingMode == GPUSKinningCullingMode.AlwaysAnimate)
         {
             res.Update(deltaTime, currMtrl);
             res.UpdatePlayingData(
@@ -464,7 +463,6 @@ public class GPUSkinningPlayer
 
     /// <summary>
     /// Get CurrentState Material
-    /// 
     /// </summary>
     /// <returns></returns>
     private GPUSkinningMaterial GetCurrentMaterial()
@@ -505,6 +503,12 @@ public class GPUSkinningPlayer
         }
     }
 
+    /// <summary>
+    /// ApplyRootMotion
+    /// </summary>
+    /// <param name="frame"></param>
+    /// <param name="blend"></param>
+    /// <param name="doRotate"></param>
     private void DoRootMotion(GPUSkinningFrame frame, float blend, bool doRotate)
     {
         if(frame == null)
@@ -592,6 +596,10 @@ public class GPUSkinningPlayer
         return (int)(time * clip.fps) % (int)(clip.length * clip.fps);
     }
 
+    /// <summary>
+    /// update joint pos
+    /// </summary>
+    /// <param name="frame"></param>
     private void UpdateJoints(GPUSkinningFrame frame)
     {
         if(joints == null)

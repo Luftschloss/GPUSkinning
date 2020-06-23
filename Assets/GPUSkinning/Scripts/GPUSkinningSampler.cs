@@ -378,7 +378,6 @@ public class GPUSkinningSampler : MonoBehaviour
     /// <summary>
     /// Core Function: Prepared Step
     /// Animator Play PreWork
-    /// Why Prepare????
     /// </summary>
     private void PrepareRecordAnimator()
     {
@@ -610,11 +609,13 @@ public class GPUSkinningSampler : MonoBehaviour
         Texture2D texture = new Texture2D(gpuSkinningAnim.textureWidth, gpuSkinningAnim.textureHeight, TextureFormat.RGBAHalf, false, true);
         Color[] pixels = texture.GetPixels();
         int pixelIndex = 0;
+        //traverse all clip
         for (int clipIndex = 0; clipIndex < gpuSkinningAnim.clips.Length; ++clipIndex)
         {
             GPUSkinningClip clip = gpuSkinningAnim.clips[clipIndex];
             GPUSkinningFrame[] frames = clip.frames;
             int numFrames = frames.Length;
+            //traverse every frame recorded in frame
             for (int frameIndex = 0; frameIndex < numFrames; ++frameIndex)
             {
                 GPUSkinningFrame frame = frames[frameIndex];
@@ -893,7 +894,9 @@ public class GPUSkinningSampler : MonoBehaviour
     }
 
     /// <summary>
-    /// SapmleCore[Start more than one SamplingCoroutine, a SamplingCoroutine for a frame of clip]
+    /// Core Function:Sample
+    /// [Start more than one SamplingCoroutine, a SamplingCoroutine for a frame of clip]
+    /// can opetimise (calculate from parent bone node, avoid repeat Matrix multiply)
     /// </summary>
     /// <param name="frame"></param>
     /// <param name="totalFrames"></param>

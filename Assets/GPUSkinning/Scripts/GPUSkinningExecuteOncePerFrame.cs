@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ???
+/// Different GPUSkinningPlayer Own One GPUSkinningResource
 /// </summary>
 public class GPUSkinningExecuteOncePerFrame
 {

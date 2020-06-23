@@ -52,17 +52,29 @@ public class GPUSkinningPlayerResources
     }
 
     //SPUSkinning Shader PropertyID
-
+    /// <summary>
+    /// Texture Data(BoneAnim Matrix)
+    /// </summary>
     private static int shaderPropID_GPUSkinning_TextureMatrix = -1;
-
+    /// <summary>
+    /// Data OffSet Per Frame   (Texture Width, Height, FrameDataLen = Bones*3)
+    /// </summary>
     private static int shaderPropID_GPUSkinning_TextureSize_NumPixelsPerFrame = 0;
-
+    /// <summary>
+    /// Frame Info              (Current FrameIndex, Current Clip Start Pixels Index)
+    /// </summary>
     private static int shaderPorpID_GPUSkinning_FrameIndex_PixelSegmentation = 0;
-
+    /// <summary>
+    /// RootMotion              (CurrentFrame RootMotion Matrix)
+    /// </summary>
     private static int shaderPropID_GPUSkinning_RootMotion = 0;
-
+    /// <summary>
+    /// Blend Frame Info        ()
+    /// </summary>
     private static int shaderPorpID_GPUSkinning_FrameIndex_PixelSegmentation_Blend_CrossFade = 0;
-
+    /// <summary>
+    /// Blend RootMotion        (LastFrame RootMotion Matrix)
+    /// </summary>
     private static int shaderPropID_GPUSkinning_RootMotion_CrossFade = 0;
 
     public GPUSkinningPlayerResources()
@@ -222,6 +234,9 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// Update Palyer BoundingSphere Info
+    /// </summary>
     private void UpdateCullingBounds()
     {
         int numPlayers = players.Count;
@@ -236,7 +251,7 @@ public class GPUSkinningPlayerResources
     }
 
     /// <summary>
-    /// Core Function:update time to material
+    /// Core Function:update base data to material
     /// </summary>
     /// <param name="deltaTime"></param>
     /// <param name="mtrl"></param>
@@ -258,6 +273,18 @@ public class GPUSkinningPlayerResources
         }
     }
 
+    /// <summary>
+    /// Core Function:Set MaterialPropertyBlock(pixelSegmentation, rootMotion, )
+    /// </summary>
+    /// <param name="mpb"></param>
+    /// <param name="playingClip"></param>
+    /// <param name="frameIndex"></param>
+    /// <param name="frame"></param>
+    /// <param name="rootMotionEnabled"></param>
+    /// <param name="lastPlayedClip"></param>
+    /// <param name="frameIndex_crossFade"></param>
+    /// <param name="crossFadeTime"></param>
+    /// <param name="crossFadeProgress"></param>
     public void UpdatePlayingData(
         MaterialPropertyBlock mpb, GPUSkinningClip playingClip, int frameIndex, GPUSkinningFrame frame, bool rootMotionEnabled,
         GPUSkinningClip lastPlayedClip, int frameIndex_crossFade, float crossFadeTime, float crossFadeProgress)
